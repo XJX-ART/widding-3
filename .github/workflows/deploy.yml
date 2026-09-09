@@ -21,29 +21,24 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout wedding customization
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Prepare full Stardew template
+      - name: Prepare site
         run: |
           git clone --depth 1 https://github.com/tutouxiaozhou/stardew-wedding-template.git _template
           rm -rf site
           mkdir site
           cp -a _template/. site/
-          cp index.html site/index.html
-          mkdir -p site/assets
-          cp assets/pixel-couple.svg site/assets/pixel-couple.svg
-          cp assets/share-cover.svg site/assets/share-cover.svg
+          cp index.html style.css app.js site/
+          mkdir -p site/assets/wedding
+          cp assets/wedding/wedding-mark.svg site/assets/wedding/wedding-mark.svg
           touch site/.nojekyll
-
       - name: Configure Pages
         uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
